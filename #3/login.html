@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <style>
+      .tag {
+        width: 50px;
+      }
+      table {
+        border: 1px solid gray;
+        padding: 10px;
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Login</h2>
+    <form action="session.php" method="post">
+      <table>
+        <tr>
+          <td class="tag">ID</td>
+          <td><input type="text" name="userid"></td>
+        </tr>
+        <tr>
+          <td class="tag">PW</td>
+          <td><input type="password" name="userpw"></td>
+        </tr>
+      </table>
+      <div>
+        <input type="submit" value="Sign In">
+        <input type="button" value="Sign Up" onclick="signup()">
+      </div>
+    </form>
+    <script>
+      function signup() {
+        window.location.href = "./signup.html";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Sign Up</title>
+    <style>
+      .tag {
+        width: 50px;
+      }
+      table {
+        border: 1px solid gray;
+        padding: 10px;
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Sign Up</h2>
+    <form id="sub" action="regist.php" method="post">
+      <table>
+        <tr>
+          <td class="tag">ID</td>
+          <td><input type="text" name="userid" maxlength="30"></td>
+        </tr>
+        <tr>
+          <td class="tag">PW</td>
+          <td><input type="password" name="userpw" maxlength="30"></td>
+        </tr>
+        <tr>
+          <td class="tag">Name</td>
+          <td><input type="text" name="username" maxlength="60"></td>
+        </tr>
+        <tr>
+          <td class="tag">Email</td>
+          <td><input type="text" name="useremail" maxlength="60"></td>
+        </tr>
+      </table>
+      <div>
+        <input type="button" value="Sign Up" onclick="check()">
+        <input type="button" value="Back" onclick="back()">
+      </div>
+    </form>
+    <script>
+      function back() {
+        window.location.href = "./login.html";
+      }
+      function check() {
+        id = document.getElementsByName("userid")[0].value;
+        pw = document.getElementsByName("userpw")[0].value;
+
+        if (id == '' || pw == '') {
+          alert("Please enter the ID and PW");
+        }
+        else {
+          document.getElementById("sub").submit();
+        }
+      }
+    </script>
+  </body>
+</html>
