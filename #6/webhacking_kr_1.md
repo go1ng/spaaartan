@@ -1,0 +1,54 @@
+# Webhacking.kr
+*50-100 Point / Code, JS*
+
+## #6 (Code)
+페이지를 로딩할 때 쿠키가 없으면 `user`와 `password` 라는 변수에 각각 `guest`와 `123qwe`라는 문자열을 **base64**로 20회 인코딩한 다음, 숫자를 특수문자로 치환하여 쿠키값으로 저장한다.
+
+이후 쿠키에서 `user`와 `password` 값을 불러와 특수문자를 숫자로 치환하고 **base64**로 20회 디코딩하여 `id`와 `pw`를 비교한다. 따라서 `admin`과 `nimda`라는 문자열을 **base64**로 20회 인코딩 한 다음, 각각 쿠키의 `user`와 `password`에 인코딩 한 값을 넣어 저장하고 새로고침하면 문제가 풀린다.
+
+---
+## #14 (JS)
+```js
+function ck(){
+  var ul=document.URL;
+  ul=ul.indexOf(".kr");
+  ul=ul*30;
+  if(ul==pw.input_pwd.value) { location.href="?"+ul*pw.input_pwd.value; }
+  else { alert("Wrong"); }
+}
+```
+버튼을 작동하면 `ul`에 URL 값에서 `.kr`이 위치한 인덱스에 30을 곱한 값을 할당한다. 입력값이 `ul`과 같으면 문제가 풀린다.
+
+---
+## #15 (JS)
+문제에 접속해보면 *Access_Denied* 라는 오류가 출력되고 메인 페이지로 이동되는 것을 확인할 수 있다. **Burp Suite**로 해당 페이지를 잡아서 소스 코드를 확인해보면 아래와 같다.
+```js
+alert("Access_Denied");
+location.href='/';
+document.write("<a href=?getFlag>[Get Flag]</a>");
+```
+오류 메시지를 출력하고 바로 루트 위치로 이동하는 것을 알 수 있다. 페이지가 이동한 뒤에 링크를 출력하려고 하기 때문에 플래그를 확인할 수 없을 것이다. 하지만 링크의 위치가 `getFlag`를 가리키고 있기 때문에 해당 문제의 페이지 URL에 `?getFlag`를 이어 붙여 이동시켜주면 문제가 풀린다.
+
+---
+## #16 (Code)
+```js
+function mv(cd){
+  kk(star.style.left-50,star.style.top-50);
+  if(cd==100) star.style.left=parseInt(star.style.left+0,10)+50+"px";
+  if(cd==97) star.style.left=parseInt(star.style.left+0,10)-50+"px";
+  if(cd==119) star.style.top=parseInt(star.style.top+0,10)-50+"px";
+  if(cd==115) star.style.top=parseInt(star.style.top+0,10)+50+"px";
+  if(cd==124) location.href=String.fromCharCode(cd)+".php"; // do it!
+}
+```
+페이지 소스 코드를 보면 주석으로 설명되어 있는 부분이 보인다. 키코드가 124인 키를 눌렀을 때, 어떤 PHP 파일로 이동하는 것으로 예상할 수 있다. 하지만 124에 해당하는 키는 존재하지 않는다.
+
+`String.fromCharCode(cd)` 라는 함수는 입력된 숫자를 문자로 바꿔주는 역할을 한다. `cd`가 124이면 `|` 문자이므로, `|.php` 라는 파일로 이동하면 문제가 풀린다.
+
+---
+## #17 (JS)
+페이지 소스 코드를 보면 `unlock`이라는 변수에 복잡한 계산식이 적혀있다. 그리고 `login.pw.value`와 `unlock`의 값이 일치하면 페이지의 위치가 이동된다. 계산식을 복사하여 크롬 콘솔에서 계산하고 나온 값을 입력창에 넣으면 문제를 풀 수 있다.
+
+---
+## #54 (Code)
+해당 페이지에 접속하면 플래그를 한 글자씩 빠른 속도로 보여준다. 아직 편하게 코드를 짤 수 없어서 **Burp Suite**로 페이지를 하나씩 잡아 모아서 플래그를 인증하였다.
